@@ -8,7 +8,7 @@ function App() {
   const [date, setDate] = useState("");
   const [result, setResult] = useState(null);
 
-  // ✅ Backend URL (IMPORTANT)
+  // 🔥 IMPORTANT: your Render backend URL
   const API = "https://golf-backend-mpxh.onrender.com";
 
   // ✅ Add Score
@@ -31,7 +31,7 @@ function App() {
       setResult(res.data);
     } catch (error) {
       console.error(error);
-      alert("Error running draw");
+      alert("Backend error");
     }
   };
 
@@ -49,58 +49,85 @@ function App() {
   };
 
   return (
-    <div className="container" style={{ padding: "20px" }}>
+    <div className="container">
       <h1>🏌️ Golf Draw System</h1>
 
-      {/* ✅ Add Score */}
+      {/* ADD SCORE */}
       <div className="card">
         <h2>Add Score</h2>
+
         <input
           type="number"
           placeholder="User ID"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
-        <br />
+
         <input
           type="number"
           placeholder="Score"
           value={score}
           onChange={(e) => setScore(e.target.value)}
         />
-        <br />
+
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <br />
+
         <button onClick={addScore}>Add Score</button>
       </div>
 
-      {/* ✅ Run Draw */}
+      {/* RUN DRAW */}
       <div className="card">
         <h2>Run Draw</h2>
         <button onClick={runDraw}>Run Draw</button>
 
         {result && (
           <div>
-            <h3>Result:</h3>
-            <pre>{JSON.stringify(result, null, 2)}</pre>
+            <h3>Winners</h3>
+
+            <table border="1" style={{ margin: "10px auto" }}>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User ID</th>
+                  <th>Match Count</th>
+                  <th>Prize</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.winners.map((w) => (
+                  <tr key={w.id}>
+                    <td>{w.id}</td>
+                    <td>{w.userId}</td>
+                    <td>{w.matchCount}</td>
+                    <td>{w.prize}</td>
+                    <td>{w.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <h3>Draw Numbers</h3>
+            <p>{result.drawNumbers.join(", ")}</p>
           </div>
         )}
       </div>
 
-      {/* ✅ Subscribe */}
+      {/* SUBSCRIPTION */}
       <div className="card">
         <h2>Subscription</h2>
+
         <input
           type="number"
           placeholder="User ID"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
-        <br />
+
         <button onClick={subscribe}>Subscribe Monthly</button>
       </div>
     </div>

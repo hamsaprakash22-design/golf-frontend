@@ -109,3 +109,17 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+td, th {
+  text-align: center;
+}
