@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-asdfasdfasdf
-=======
 import { useState } from "react";
 import axios from "axios";
 import "./App.css";
@@ -11,68 +8,103 @@ function App() {
   const [date, setDate] = useState("");
   const [result, setResult] = useState(null);
 
-  const API = "http://localhost:8081";
+  // ✅ Backend URL (IMPORTANT)
+  const API = "https://golf-backend-mpxh.onrender.com";
 
+  // ✅ Add Score
   const addScore = async () => {
-    const res = await axios.get(
-      `${API}/api/scores/add?userId=${userId}&score=${score}&date=${date}`
-    );
-    alert(res.data);
+    try {
+      const res = await axios.get(
+        `${API}/api/scores/add?userId=${userId}&score=${score}&date=${date}`
+      );
+      alert(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Error adding score");
+    }
   };
 
+  // ✅ Run Draw
   const runDraw = async () => {
-    const res = await axios.get(`${API}/api/draw/run`);
-    setResult(res.data);
+    try {
+      const res = await axios.get(`${API}/api/draw/run`);
+      setResult(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Error running draw");
+    }
   };
 
+  // ✅ Subscribe
   const subscribe = async () => {
-    const res = await axios.get(
-      `${API}/api/subscription/subscribe?userId=${userId}&plan=monthly`
-    );
-    alert(res.data);
+    try {
+      const res = await axios.get(
+        `${API}/api/subscription/subscribe?userId=${userId}&plan=monthly`
+      );
+      alert(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Subscription error");
+    }
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ padding: "20px" }}>
       <h1>🏌️ Golf Draw System</h1>
 
+      {/* ✅ Add Score */}
       <div className="card">
         <h2>Add Score</h2>
-        <input placeholder="User ID" onChange={(e) => setUserId(e.target.value)} />
-        <input placeholder="Score" onChange={(e) => setScore(e.target.value)} />
-        <input placeholder="Date (YYYY-MM-DD)" onChange={(e) => setDate(e.target.value)} />
+        <input
+          type="number"
+          placeholder="User ID"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+        />
+        <br />
+        <input
+          type="number"
+          placeholder="Score"
+          value={score}
+          onChange={(e) => setScore(e.target.value)}
+        />
+        <br />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <br />
         <button onClick={addScore}>Add Score</button>
       </div>
 
-      <div className="card">
-        <h2>Subscription</h2>
-        <button onClick={subscribe}>Subscribe</button>
-      </div>
-
+      {/* ✅ Run Draw */}
       <div className="card">
         <h2>Run Draw</h2>
         <button onClick={runDraw}>Run Draw</button>
 
         {result && (
-          <div className="result">
-            <h3>Draw Numbers</h3>
-            <p>{result.drawNumbers.join(", ")}</p>
-
-            <h3>Winners</h3>
-            {result.winners.map((w) => (
-  <div key={w.id} className="winner-card">
-    <p><strong>User ID:</strong> {w.userId}</p>
-    <p><strong>Matches:</strong> {w.matchCount}</p>
-    <p><strong>Prize:</strong> ₹{w.prize}</p>
-    <p><strong>Status:</strong> {w.status}</p>
-  </div>
-))}
+          <div>
+            <h3>Result:</h3>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
           </div>
         )}
+      </div>
+
+      {/* ✅ Subscribe */}
+      <div className="card">
+        <h2>Subscription</h2>
+        <input
+          type="number"
+          placeholder="User ID"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+        />
+        <br />
+        <button onClick={subscribe}>Subscribe Monthly</button>
       </div>
     </div>
   );
 }
 
 export default App;
->>>>>>> 71e72766acccc57ff5782e6c7cdf234b36a1654c
